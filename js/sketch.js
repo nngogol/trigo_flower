@@ -1,26 +1,26 @@
-function sig(x) {return -2/(1 + pow(2.718281828, -x)) }
-function setup() {createCanvas(900, 400, WEBGL) }
+function sig(x) {return -2/(1 + pow(2.71828, -x)) }
+function setup() {createCanvas(700, 500, WEBGL) }
 
 let points = []
 let history = []
 let a = 0
-let a_delta = 0.13
+let a_delta = 0.14
 let inc = 0
 let inc_d = 0.1
 
 
 // радиус сферы 
-let r = 250
+let r = 200
 
 // .........................................
-let speed_of_finfing_dots = 3 	// <--- дельта
+let speed_of_finfing_dots = 6 	// <--- дельта
 let fra = 0						// <--- начало
-let fra_delta = 5				// <--- общая дельта
+let fra_delta = 3				// <--- общая дельта
 let next_fra = fra_delta		// <--- след. точка
 // .........................................
 
 // длина хвоста
-let tail_len = 340
+let tail_len = 250
 
 // формула
 function formula(rad, delta) {
@@ -34,16 +34,16 @@ function draw() {
 	scale(.4)
 
 	// вертеть
-	rotateY(radians(-frameCount*.5))
+	rotateY(radians(-40-frameCount*.5))
 	translate(-width/2, -height/2)
 
 	// показывать вспогомательные линии
 	// base
-	noFill()
-	stroke(255, 10)
-	// ellipse(width/2, height/2, r, r)
-	line(0, height/2, width, height/2) // hor
-	line(width/2, 0, width/2, height) // ver
+	// noFill()
+	// stroke(255, 10)
+	// // ellipse(width/2, height/2, r, r)
+	// line(0, height/2, width, height/2) // hor
+	// line(width/2, 0, width/2, height) // ver
 
 	stroke(255)
 	push()
@@ -51,7 +51,8 @@ function draw() {
 	let rx = 0
 	let ry = 0
 	translate((width/2), height/2)
-	for (var i = fra; i < next_fra; i+=speed_of_finfing_dots) {
+
+	for (let i = fra; i < next_fra; i+=speed_of_finfing_dots) {
 		angle = radians(-i)
 		rotate(angle)
 		
@@ -68,23 +69,22 @@ function draw() {
 	// хвост
 	if (history.length > tail_len){history.splice(0,3)}
 
-	history.map(b =>
-		{
-			push()
-			stroke(160, b[0], 220)
-			translate(width/2, height/2, b[0]/2)
-			rotate(b[1])
-			
-			// 1 way
-			translate(b[0], 0)
-			box(b[0], 0, 5)
-			
-			// 2 way
-			ellipse(b[0], 0, 5, 5)
-			
-			pop()
-		}
-		)
+	for (let i = 0; i < history.length; i++) {
+		let some_point = history[i]
 
+		push()
+		stroke(160, some_point[0], 220)
+		translate(width/2, height/2, some_point[0]/2)
+		rotate(some_point[1])
+		
+		// 1 way
+		translate(some_point[0], 0)
+		box(some_point[0], 0, 5)
+		
+		// 2 way
+		// ellipse(some_point[0], 0, 5, 5)
+		
+		pop()
+	}
 
 }
